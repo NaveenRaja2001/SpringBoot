@@ -8,27 +8,22 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 
-import com.model.InsufficientBalance;
-import com.model.MyService;
+import com.model.InsufficientBalanceException;
 import com.model.TransactionService;
 
 @SpringBootApplication(exclude = HibernateJpaAutoConfiguration.class)
 @ComponentScan(basePackages = {"com"})
 public class SpringStart1Application {
 
-	public static void main(String[] args) throws InsufficientBalance {
-		ApplicationContext ctx=SpringApplication.run(SpringStart1Application.class, args);
-//		AccountsDAO DAO=ctx.getBean("acdo",AccountsDAO.class);
-//		AccountsDTO DTO=DAO.findByID(200);
-//		System.out.println(DTO);
-
+	public static void main(String[] args) throws InsufficientBalanceException {
+		ApplicationContext applicationContext=SpringApplication.run(SpringStart1Application.class, args);
 		
 //		MyService myservice=ctx.getBean("myService",MyService.class);
-//		myservice.doService(200,400);
+//		myservice.doService(100,600);
 		
 		
-		TransactionService tss = ctx.getBean("tss",TransactionService.class);
-		tss.moneyTransfer(100, 200, 2);
+		TransactionService transactionService = applicationContext.getBean("transactionService",TransactionService.class);
+		transactionService.moneyTransfer(100, 200, 10000);
 //		System.out.println(DTO);
 	}
 

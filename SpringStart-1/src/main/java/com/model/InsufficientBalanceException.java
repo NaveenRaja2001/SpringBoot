@@ -1,9 +1,9 @@
 package com.model;
 
-public class InsufficientBalance extends Exception {
-	String msg;
-	public InsufficientBalance(String str) {
-		this.msg=str;
+public class InsufficientBalanceException extends Exception {
+	String message;
+	public InsufficientBalanceException(String string) {
+		this.message=string;
 		// TODO Auto-generated constructor stub
 	}
 	@Override
