@@ -7,11 +7,9 @@ package com.example.exception;
  * @author naveenraja
  *
  */
-public class InsufficientBalanceException extends Exception{
-String message;
-
-public InsufficientBalanceException(String message) {
-	this.message = message;
-}
+public class InsufficientBalanceException extends Exception {
+	public InsufficientBalanceException(String message) {
+		super(message);
+	}
 
 }

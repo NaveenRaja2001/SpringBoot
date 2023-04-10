@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.exception.IdAlreadyExistException;
 import com.example.exception.InsufficientBalanceException;
 
 @Service("ss")
@@ -18,10 +19,18 @@ public class BankService implements BankServiceInterface{
 	@Autowired
 	BankDAO bankDAO;
 	@Override
-	public void createUser(BankDTO bank) {
+	public void createUser(BankDTO bank) throws IdAlreadyExistException {
+		int id=bank.getUid();
+	   System.out.println("hugyhg"+bankDAO.existsById(Integer.valueOf(id)) );
+		if(bankDAO.existsById(Integer.valueOf(id))) {
+		throw new IdAlreadyExistException("IdAlreadyExistException is throw");
+		}
+		
+		else {
 		// TODO Auto-generated method stub
 		bankDAO.save(bank);
-	}
+		}
+		}
 
 	@Override
 	public BankDTO checkBalance(int id) {
@@ -32,7 +41,7 @@ public class BankService implements BankServiceInterface{
 	}
 
 	@Override
-	@Transactional(propagation =Propagation.REQUIRED)
+	@Transactional(propagation =Propagation.REQUIRES_NEW)
 	public void transfer(Transaction trans) throws InsufficientBalanceException {
 		
 	  int creditId=trans.getCredit();
@@ -47,7 +56,7 @@ public class BankService implements BankServiceInterface{
 		
 		
 	}
-	@Transactional(propagation = Propagation.REQUIRED )
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public void debitransfer(int id,int amount) throws InsufficientBalanceException {
 		Optional<BankDTO> obj1=bankDAO.findById(Integer.valueOf(id));
 		BankDTO bankAcc1=obj1.get();
@@ -58,7 +67,7 @@ public class BankService implements BankServiceInterface{
 		System.out.println(bankAcc1.getAmount());
 		bankDAO.save(bankAcc1);
 	}
-	@Transactional(propagation = Propagation.REQUIRED)
+	@Transactional(propagation = Propagation.SUPPORTS)
 	public void creditransfer(int id,int amount) {
 		Optional<BankDTO> obj1=bankDAO.findById(Integer.valueOf(id));
 		BankDTO bankAcc=obj1.get();

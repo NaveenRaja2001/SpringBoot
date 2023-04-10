@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.example.exception.IdAlreadyExistException;
 import com.example.exception.InsufficientBalanceException;
 
 @RestController
@@ -31,7 +32,13 @@ public class BankController {
 	}
 	@RequestMapping(value="createAccount",method=RequestMethod.POST)
 	public ModelAndView addAccount(BankDTO bankDTO,ModelAndView mandv) {
+		try {
 		bank.createUser(bankDTO);
+		}
+		catch(Exception e) {
+			mandv.setViewName("InvalidId");
+			return mandv;
+		}
 		mandv.setViewName("User");
 		return mandv;
 		
